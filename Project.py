@@ -1,5 +1,6 @@
 
 import tkinter as tk
+from tkinter import ttk
 from tkinter import messagebox
 import pickle
 import random
@@ -13,21 +14,31 @@ from LogIn import LogInScreen
 def MainScreen():
 
     root = tk.Tk()
+    root.title("Daydreams and Party Things")
+    root.configure(bg = "pink")
 
-    root.geometry("300x300")
     
 
-    MainScreen = tk.Label(root, text = "Welcome!", font = "Arial", anchor = "center")
+    style = ttk.Style()
+    style.theme_use("clam")
+
+    style.configure("Button.TButton",background = "white",foreground = "black",bordercolor = "#C2185B",
+                    borderwidth = 2)
+
+    style.configure("Label.TLabel",background = "pink", foreground = "White")
+    
+
+    MainScreen = ttk.Label(root, text = "Welcome!",style = "Label.TLabel", font = ("Arial",20,"bold"), anchor = "center")
     MainScreen.grid(row = 0, column = 0, columnspan = 2)
 
 
-    SignUpButton = tk.Button(root, text = "Sign Up!", command = lambda: goto(root,SignUpScreen))
+    SignUpButton = ttk.Button(root, text = "Sign Up!", style = "Button.TButton", command = lambda: goto(root,SignUpScreen))
     SignUpButton.grid(row = 3, column = 0)
 
-    filler = tk.Label(text = "      ")
+    filler = ttk.Label(root,text = "      ",style = "Label.TLabel")
     filler.grid(row = 3, column = 1)
 
-    LogInButton = tk.Button(root, text= "Log In!", command = lambda: goto(root,LogInScreen))
+    LogInButton = ttk.Button(root, text= "Log In!", style = "Button.TButton", command = lambda: goto(root,LogInScreen))
     LogInButton.grid(row = 3, column= 2)
 
 

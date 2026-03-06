@@ -2,7 +2,7 @@
 import pickle 
 from Nav import goto
 import tkinter as tk
-from tkinter import messagebox
+from tkinter import messagebox, ttk
 
 
 
@@ -52,48 +52,60 @@ def SignUpScreen():
         SignedUp = False
 
         root = tk.Tk()
+        root.title("Sign Up")
+        root.configure(bg = "pink")
+
+        
+
+        style = ttk.Style()
+        style.theme_use("clam")
+
+        style.configure("Button.TButton",background = "white",foreground = "black",bordercolor = "#C2185B",
+                        borderwidth = 2)
+
+        style.configure("Label.TLabel",background = "pink", foreground = "White")
 
 
-        frameRight = tk.Label(root)
+        frameRight = ttk.Label(root,style = "Label.TLabel")
         frameRight.grid(row = 0, column = 3)
-        frameLeft = tk.Label(root)
+        frameLeft = ttk.Label(root,style= "Label.TLabel")
         frameLeft.grid(row = 0, column = 0)
 
 
-        Registration = tk.Label(root, text = "Sign Up", font =("Arial", 20), anchor = "center")
+        Registration = ttk.Label(root, text = "Sign Up",style = "Label.TLabel", font =("Arial", 20,"bold"), anchor = "center")
         Registration.grid(row = 0, column = 1, columnspan = 2)
 
-        eMailLabel = tk.Label(root, text = "E-Mail:")
+        eMailLabel = ttk.Label(root,style = "Label.TLabel", text = "E-Mail:",font = ("Arial",14,"bold"))
         eMailLabel.grid(row = 1, column = 1)
         eMail = tk.Entry(root)
         eMail.grid(row = 1, column = 2)
 
-        pWordLabel = tk.Label(root, text = "Password:")
+        pWordLabel = ttk.Label(root,style = "Label.TLabel", text = "Password:",font = ("Arial",14,"bold"))
         pWordLabel.grid(row = 2, column = 1)
         pWord = tk.Entry(root,show = "*")
         pWord.grid(row = 2, column = 2)
 
-        fNameLabel = tk.Label(root,text = "First Name:")
+        fNameLabel = ttk.Label(root,style = "Label.TLabel",text = "First Name:",font = ("Arial",14,"bold"))
         fNameLabel.grid(row = 3, column = 1)
         fName = tk.Entry(root,)
         fName.grid(row = 3, column = 2)
 
-        sNameLabel = tk.Label(root,text = "Last Name:")
+        sNameLabel = ttk.Label(root,style = "Label.TLabel",text = "Last Name:",font = ("Arial",14,"bold"))
         sNameLabel.grid(row = 4, column = 1)
         sName = tk.Entry(root)
         sName.grid(row = 4, column = 2)
 
-        pNumLabel = tk.Label(root,text = "Phone Number:")
+        pNumLabel = ttk.Label(root,style = "Label.TLabel",text = "Phone Number:",font = ("Arial",14,"bold"))
         pNumLabel.grid(row = 5, column = 1)
         pNum = tk.Entry(root)
         pNum.grid(row = 5, column = 2)
 
-        pCodeLabel = tk.Label(root,text = "Post Code:")
+        pCodeLabel = ttk.Label(root,style = "Label.TLabel",text = "Post Code:",font = ("Arial",14,"bold"))
         pCodeLabel.grid(row = 6, column = 1)
         pCode = tk.Entry(root)
         pCode.grid(row = 6, column = 2)
 
-        Filler = tk.Label(root)
+        Filler = ttk.Label(root,style = "Label.TLabel")
         Filler.grid(row = 7, column = 1, columnspan = 2)
 
         def addCustomer(fNameVal,sNameVal,eMailVal,pWordVal,pNumVal,pCodeVal):
@@ -166,48 +178,62 @@ def SignUpScreen():
             MainScreen()
 
 
-        SaveButton = tk.Button(root, text = "Confirm", command = lambda: addCustomer(fName.get(),sName.get(),eMail.get(),pWord.get(),pNum.get(),pCode.get()))
+        SaveButton = ttk.Button(root,style = "Button.TButton", text = "Confirm", command = lambda: addCustomer(fName.get(),sName.get(),eMail.get(),pWord.get(),pNum.get(),pCode.get()))
         SaveButton.grid(row = 8, column = 1, columnspan = 2)
 
 
 def EditAccount():
     root = tk.Tk()
 
+    root.title("Daydreams and Party Things")
+    root.configure(bg = "pink")
+
+    
+
+    style = ttk.Style(root)
+    style.theme_use("clam")
+
+    style.configure("Button.TButton",background = "white",foreground = "black",bordercolor = "#C2185B",
+                    borderwidth = 2)
+
+    style.configure("Label.TLabel",background = "pink", foreground = "White")
+    style.configure("SPink.TLabel",background = "pink",foreground = "white",font = ("Arial",14,"bold"))
+
     with open("current_user.pkl","rb") as file:
         user = pickle.load(file)
 
 
-    fNameLabel = tk.Label(root, text = "First Name: ")
+    fNameLabel = ttk.Label(root,style = "SPink.TLabel", text = "First Name: ")
     fNameLabel.grid(row = 0, column = 0)
     fNameEntry = tk.Entry(root)
     fNameEntry.insert(0,user.fName)
     fNameEntry.grid(row = 0, column = 1)
 
-    sNameLabel = tk.Label(root, text = "Last Name: ")
+    sNameLabel = ttk.Label(root,style = "SPink.TLabel", text = "Last Name: ")
     sNameLabel.grid(row = 1, column = 0)
     sNameEntry = tk.Entry(root)
     sNameEntry.insert(0,user.sName)
     sNameEntry.grid(row = 1, column = 1)
 
-    eMailLabel = tk.Label(root, text = "E-Mail: ")
+    eMailLabel = ttk.Label(root,style = "SPink.TLabel", text = "E-Mail: ")
     eMailLabel.grid(row = 2, column = 0)
     eMailEntry = tk.Entry(root)
     eMailEntry.insert(0,user.eMail)
     eMailEntry.grid(row = 2, column = 1)
 
-    pWordLabel = tk.Label(root, text = "Password: ")
+    pWordLabel = ttk.Label(root,style = "SPink.TLabel", text = "Password: ")
     pWordLabel.grid(row = 3, column = 0)
     pWordEntry = tk.Entry(root)
     pWordEntry.insert(0,user.pWord)
     pWordEntry.grid(row = 3, column = 1)
 
-    pNumLabel = tk.Label(root, text = "Phone Number: ")
+    pNumLabel = ttk.Label(root,style = "SPink.TLabel", text = "Phone Number: ")
     pNumLabel.grid(row = 4, column = 0)
     pNumEntry = tk.Entry(root)
     pNumEntry.insert(0,user.pNum)
     pNumEntry.grid(row = 4, column = 1)
 
-    pCodeLabel = tk.Label(root, text = "Postcode: ")
+    pCodeLabel = ttk.Label(root,style = "SPink.TLabel", text = "Postcode: ",)
     pCodeLabel.grid(row = 5, column = 0)
     pCodeEntry = tk.Entry(root)
     pCodeEntry.insert(0,user.pCode)
@@ -255,7 +281,7 @@ def EditAccount():
         print(temp.get_attributes())
         print(my_objects)
 
-    tk.Button(root,text = "Change Details",command = lambda: change()).grid(row = 6, column = 1)
+    ttk.Button(root,style = "Button.TButton",text = "Change Details",command = lambda: change()).grid(row = 6, column = 1)
     
 
     

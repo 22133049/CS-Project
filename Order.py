@@ -3,7 +3,7 @@ from Product import Product
 from Classes.Stock import Stock
 import pickle
 import tkinter as tk
-from tkinter import messagebox, StringVar, OptionMenu
+from tkinter import messagebox, StringVar, OptionMenu, ttk
 from datetime import date,timedelta
 
 class Order:
@@ -38,6 +38,25 @@ def placeOrder():
 
     root = tk.Toplevel()
 
+    root.title("Place Order")
+    root.configure(bg = "pink")
+    style = ttk.Style()
+    style.theme_use("clam")
+
+    style.configure("Button.TButton",background = "white",foreground = "black",bordercolor = "#C2185B",
+                    borderwidth = 2)
+
+    style.configure("Label.TLabel",background = "pink", foreground = "White")
+
+    style.configure(
+    "Custom.TMenubutton",   
+    background="pink",         
+    foreground="white",
+    bordercolor="#C2185B",
+    borderwidth=2,
+    padding=5)
+                
+
     Products = [] # for Dropdown
     ProductPrices = {}
     ProdSelect = []
@@ -56,26 +75,26 @@ def placeOrder():
         ProductPrices[item.name] = item.Price
         Supplies.append(item.suppliesNeeded)
 
-    tk.Label(root,text = "Place Your Order",font = ("Arial",20,'bold')).grid(row = 0, column = 0)
+    ttk.Label(root,text = "Place Your Order",style = "Label.TLabel",font = ("Arial",20,'bold')).grid(row = 0, column = 0)
 
     opt = StringVar()
     opt.set(Products[0])
 
-    ProductMenuLabel = tk.Label(root, text = "Select Products:")
+    ProductMenuLabel = ttk.Label(root,style = "Label.TLabel", text = "Select Products:")
     ProductMenuLabel.grid(row =  1, column = 0)
 
-    ProductMenu = OptionMenu(root, opt, *Products)
+    ProductMenu = ttk.OptionMenu(root, opt,Products[0], *Products,style = "Custom.TMenubutton")
     ProductMenu.grid(row = 1, column = 1)
 
-    QuantityLabel = tk.Label(root, text = "Quantity")
+    QuantityLabel = ttk.Label(root,style = "Label.TLabel", text = "Quantity",font = ("Arial",14,"bold"))
     QuantityLabel.grid(row = 2, column= 0)
     quantity = tk.Entry(root)
     quantity.grid(row = 2, column = 1)
 
-    costLabel = tk.Label(root, text = "Costs:")
+    costLabel = ttk.Label(root,style = "Label.TLabel", text = "Costs:",font = ("Arial",14,"bold"))
     costLabel.grid(row = 3, column = 0)
 
-    cost = tk.Label(root,text = "0")
+    cost = ttk.Label(root,style = "Label.TLabel",text = "£0",font = ("Arial",14,"bold"))
     cost.grid(row = 3, column = 1)
         
 
@@ -90,10 +109,21 @@ def placeOrder():
         for i in ProdSelect:
             x = i[1] * int(i[2])
             TotalPrice = TotalPrice + x
-        cost.config(text = str(TotalPrice))
+        cost.config(text = "£" + str(TotalPrice))
 
 
     def confirmOrder():
+
+        if not quantity.get():
+            tk.messagebox.showerror("Failure, no quantity selected")
+            return
+
+        
+
+        
+
+
+        
         EndCost = cost.cget("text")
         ProdList = []
         for i in ProdSelect:
@@ -101,6 +131,9 @@ def placeOrder():
 
         with open ("current_user.pkl","rb") as file:
             my_objects = pickle.load(file)
+
+
+    
 
 
 
@@ -192,8 +225,7 @@ def placeOrder():
                     tk.messagebox.showinfo("Success","Successfully Placed Order")
                     
         root.destroy()
-        from Project import MainScreen
-        MainScreen()
+        
 
 
             
@@ -205,8 +237,8 @@ def placeOrder():
         
 
 
-    tk.Button(root, text = "Add Product", command = lambda: addProduct()).grid(row = 2, column = 3, rowspan = 2)
-    tk.Button(root, text = "Confirm Order", command = lambda: confirmOrder()).grid(row = 3, column = 4, rowspan = 2)
+    ttk.Button(root, text = "Add Product",style = "Button.TButton", command = lambda: addProduct()).grid(row = 2, column = 3, rowspan = 2)
+    ttk.Button(root, text = "Confirm Order",style = "Button.TButton", command = lambda: confirmOrder()).grid(row = 3, column = 4, rowspan = 2)
 
 
 
@@ -307,4 +339,65 @@ def viewOrders():
 
 
     root.mainloop()
+
+
+def cancelOrder():
+
+    window = tk.Tk()
+    style = ttk.Style()
+    window.title("Cancel Orders")
+    window.configure(bg = "pink")
+
+    
+    with open("orders.pkl","rb") as file:
+        my_objects = list(pickle.load(file))
+
+    with open("current_user.pkl","rb") as cus:
+        customer = pickle.load(cus)
+
+
+    cusOrds = []
+
+    frames = []
+
+    for obj in my_objects:
+        if customer.id == obj.cusID and obj.ordStat == "Making":
+            cusOrds.append(obj)
+
+
+    def cancelOrd(o,frames):
+        if o in my_objects:
+            my_objects.remove(o)
+
+        try:
+            with open("orders.pkl","wb+") as file:
+                pickle.dump(my_objects,file)
+
+            window.destroy()
+
+        except:
+            tk.messagebox.showerror("Error","Order was not found")
+
+    tk.Label(window,bg = "pink",fg = "white", font = ("Arial",20,"bold"),text = "Cancel Orders:").pack()
+
+    for order in cusOrds:
+        frame = tk.Frame(window,bg = "white",highlightbackground="#C2185B",highlightthickness=2,bd=0 , relief="solid")
+        frame.pack(fill="x", pady=2)
+        frames.append(frame)
+
+        text = (
+            f"Order #{order.id} | "
+            f"Products: {order.contents} | "
+            f"Status: {order.ordStat} | "
+            f"Cost: £{order.cost} | "
+            f"Delivery Date: {order.delivDate}"
+        )
+        tk.Label(frame, text=text, anchor="w",bg = "white", fg = "black").pack(side="left", fill="x", expand=True)
+
+        
+        ttk.Button(frame, text="Cancel Order", command=lambda o=order: cancelOrd(o, frames)).pack(side="right")
+
+            
+
+    
     

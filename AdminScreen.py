@@ -1,11 +1,11 @@
 import tkinter as tk
 from tkinter import messagebox
 from Account import regStaff
-from Product import addProd
+from Product import addProd,editProd
 from Inventory import openInv
 from ViewAccounts import viewAccounts
 from Order import viewOrders
-from ViewReviews import viewReviews
+
 
 
 
@@ -39,23 +39,28 @@ def AdminScreen():
 
     tk.Label(menu,text="").grid(row=7,column=0)
 
-    ordButton = tk.Button(menu,text = "View Orders", command = lambda: viewOrders(), padx = 5, pady = 5)
-    ordButton.grid(row = 8, column = 0)
+    editButton = tk.Button(menu, text = "Edit Products", command = lambda: editProd(), padx =5, pady = 5)
+    editButton.grid(row = 8, column = 0)
 
-    
     tk.Label(menu,text="").grid(row=9,column=0)
 
-    accButton = tk.Button(menu,text = "View All Accounts",command = lambda: viewAccounts(), padx = 5,pady = 5)
-    accButton.grid(row = 10,column = 0)
+    ordButton = tk.Button(menu,text = "View Orders", command = lambda: viewOrders(), padx = 5, pady = 5)
+    ordButton.grid(row = 10, column = 0)
 
+    
     tk.Label(menu,text="").grid(row=11,column=0)
 
+    accButton = tk.Button(menu,text = "View All Accounts",command = lambda: viewAccounts(), padx = 5,pady = 5)
+    accButton.grid(row = 12,column = 0)
+
+    tk.Label(menu,text="").grid(row=13,column=0)
 
 
-    tk.Label(menu, text="").grid(row = 12, column = 0)
+
+    tk.Label(menu, text="").grid(row = 14, column = 0)
 
     invButton = tk.Button(menu,text = "Add to/View Inventory", command = lambda: openInv(), padx = 5, pady = 5)
-    invButton.grid(row = 13, column = 0)
+    invButton.grid(row = 15, column = 0)
 
 
     

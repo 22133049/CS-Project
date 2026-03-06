@@ -143,7 +143,7 @@ def editProd():
     ProductLookup = {}
 
     for item in my_products:
-        display = f"{item.name} (£{item.Price})"
+        display = f"{item.name}"
         Products.append(display)
         ProductLookup[display] = item
 
@@ -151,13 +151,29 @@ def editProd():
     opt.set(Products[0])
 
     ProductMenu = OptionMenu(root, opt, *Products)
-    ProductMenu.grid(row = 1, column = 1)
+    ProductMenu.grid(row = 0, column = 1)
 
     def changeProd():
-        selected_product = ProductLookup[opt.get()]
+        ProductMenu.destroy()
+        nonlocal opt #makes the opt variable able to be used outside of its normal place
+        selected = opt.get()
+        selected_product = ProductLookup[selected]
         print(selected_product.name)
         print(selected_product.Price)
         print(selected_product.suppliesNeeded)
+
+        Supply = []
+
+        for product in my_products:
+            if product.name == opt.get():
+                my_products.remove(product)
+                break
+
+
+        for supply in selected_product.suppliesNeeded:
+            entry = supply[0]
+            Supply.append(entry)
+            
 
             
         Name = tk.Entry(root)
@@ -169,7 +185,9 @@ def editProd():
         DescLabel = tk.Label(root, text = "Description")
         DescLabel.grid(row = 2, column = 0)
         desc = tk.Entry(root)
+        desc.insert(0,selected_product.Desc)
         desc.grid(row = 2, column = 1)
+        
 
         PriceLabel = tk.Label(root, text = "Price: ")
         PriceLabel.grid(row = 3, column = 0)
@@ -209,18 +227,21 @@ def editProd():
             Desc = desc.get()
             Price = float(price.get())
 
-            temp = Product(None, name, suppliesNeeded, Desc, Price, None)
+            temp = Product(selected_product.id, name, suppliesNeeded, Desc, Price)
 
             try:
-                      
-                with open("products.pkl", "rb")as file:
-                    my_objects = list(pickle.load(file))
-                my_objects.append(temp)
+
+                my_products.append(temp)
+
+
+
+                
+                    
 
                 with open("products.pkl", "wb+") as file:
-                    pickle.dump(my_objects, file)
+                    pickle.dump(my_products, file)
 
-                tk.messagebox.showinfo("Success","Successfully Added Product")
+                tk.messagebox.showinfo("Success","Successfully Edited Product")
 
                 root.destroy()
 
@@ -231,14 +252,16 @@ def editProd():
                 my_objects = []
                 my_objects.append(temp)
                 with open("products.pkl", "wb+") as file:
-                    pickle.dump(my_objects, file)
+                    pickle.dump(my_products, file)
                 tk.messagebox.showinfo("Success","Successfully Added Product")
                 root.destroy()
+
+        tk.Button(root, text = "Confirm Edits",command = lambda:confirmProd()).grid(row = 6, column = 1)
 
 
             
 
-    tk.Button(root,text = "Confirm", command = lambda: changeProd()).grid(row = 2, column = 1)
+    tk.Button(root,text = "Confirm", command = lambda: changeProd()).grid(row = 6, column = 1)
 
   
 

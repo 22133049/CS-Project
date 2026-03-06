@@ -1,4 +1,5 @@
 import tkinter as tk
+from tkinter import ttk
 from tkinter import messagebox
 import Account
 import pickle
@@ -8,22 +9,33 @@ from AdminScreen import AdminScreen
 def LogInScreen():
 
     root = tk.Tk()
+    root.configure(bg = "pink")
+    root.title("Log In")
 
-    LogIn = tk.Label(root, text = "Log In", font =("Arial",20))
+    style = ttk.Style()
+    style.theme_use("clam")
+
+    style.configure("Pink.TLabel",background = "pink", foreground = "white", font=("Arial",20,"bold"))
+    style.configure("SPink.TLabel",background = "pink", foreground = "white", font=("Arial",14,"bold"))
+    style.configure("Button.TButton",background = "white",foreground = "black",bordercolor = "#C2185B",
+                    borderwidth = 2)
+                    
+
+    LogIn = ttk.Label(root, text = "Log In",style = "Pink.TLabel")
     LogIn.grid(row = 0, column = 0, columnspan = 2)
 
-    eMailLabel = tk.Label(root, text = "E-Mail:")
+    eMailLabel = ttk.Label(root,style = "SPink.TLabel", text = "E-Mail:")
     eMailLabel.grid(row = 1, column = 1)
     eMail = tk.Entry(root)
     eMail.grid(row = 1, column = 2)
 
-    pWordLabel = tk.Label(root, text = "Password:")
+    pWordLabel = ttk.Label(root,style = "SPink.TLabel", text = "Password:")
     pWordLabel.grid(row = 2, column = 1)
     pWord = tk.Entry(root, show = "*")
     pWord.grid(row = 2, column = 2)
 
 
-    Filler = tk.Label(root)
+    Filler = ttk.Label(root,style = "Pink.TLabel")
     Filler.grid(row = 7, column = 1, columnspan = 2)
 
 
@@ -89,7 +101,7 @@ def LogInScreen():
             
             
 
-    tk.Button(root, text = "Log In", command = lambda: LogIn()).grid(row = 8, column = 1, columnspan = 2)
+    ttk.Button(root, text = "Log In", style = "Button.TButton",command = lambda: LogIn()).grid(row = 8, column = 1, columnspan = 2)
     
 
 
