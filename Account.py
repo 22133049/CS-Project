@@ -287,52 +287,65 @@ def EditAccount():
     
                     
 def regStaff():
+            
+
 
         SignedUp = False
 
         root = tk.Tk()
+        root.title("Register Staff")
+        root.configure(bg = "black")
+
+        style = ttk.Style(root)
+        style.theme_use("clam")
 
 
-        frameRight = tk.Label(root)
+        style.configure("White.TLabel",background = "black", foreground = "White",font = ("Arial",20,"bold"))
+        style.configure("Small.TLabel",background = "black", foreground = "White",font = ("Arial",14,"bold"))
+        style.configure("Button.TButton", background = "white",foreground = "black")
+        
+
+
+        frameRight = ttk.Label(root,style = "White.TLabel")
         frameRight.grid(row = 0, column = 3)
-        frameLeft = tk.Label(root)
+        frameLeft = ttk.Label(root,style = "White.TLabel")
         frameLeft.grid(row = 0, column = 0)
 
 
-        Registration = tk.Label(root, text = "Register Staff", font =("Arial", 20), anchor = "center")
+        Registration = ttk.Label(root, style = "White.TLabel",text = "Register Staff", anchor = "center")
         Registration.grid(row = 0, column = 1, columnspan = 2)
 
-        eMailLabel = tk.Label(root, text = "E-Mail:")
+        eMailLabel = ttk.Label(root,  style = "Small.TLabel",text = "E-Mail:")
         eMailLabel.grid(row = 1, column = 1)
-        eMail = tk.Entry(root)
+        eMail = ttk.Entry(root)
         eMail.grid(row = 1, column = 2)
 
-        pWordLabel = tk.Label(root, text = "Password:")
+        pWordLabel = ttk.Label(root, style = "Small.TLabel", text = "Password:")
         pWordLabel.grid(row = 2, column = 1)
-        pWord = tk.Entry(root,show = "*")
+        pWord = ttk.Entry(root,show = "*")
         pWord.grid(row = 2, column = 2)
 
-        fNameLabel = tk.Label(root,text = "First Name:")
+        fNameLabel = ttk.Label(root, style = "Small.TLabel",text = "First Name:")
         fNameLabel.grid(row = 3, column = 1)
-        fName = tk.Entry(root,)
+        fName = ttk.Entry(root,)
         fName.grid(row = 3, column = 2)
 
-        sNameLabel = tk.Label(root,text = "Surname:")
+        sNameLabel = ttk.Label(root, style = "Small.TLabel",text = "Surname:")
         sNameLabel.grid(row = 4, column = 1)
-        sName = tk.Entry(root)
+        sName = ttk.Entry(root)
         sName.grid(row = 4, column = 2)
 
-        pNumLabel = tk.Label(root,text = "Phone Number:")
+        pNumLabel = ttk.Label(root, style = "Small.TLabel",text = "Phone Number:")
         pNumLabel.grid(row = 5, column = 1)
-        pNum = tk.Entry(root)
+        pNum = ttk.Entry(root)
         pNum.grid(row = 5, column = 2)
 
-        pCodeLabel = tk.Label(root,text = "Post Code:")
+        pCodeLabel = ttk.Label(root, style = "Small.TLabel",text = "Post Code:")
         pCodeLabel.grid(row = 6, column = 1)
-        pCode = tk.Entry(root)
+        pCode = ttk.Entry(root)
         pCode.grid(row = 6, column = 2)
 
-        Filler = tk.Label(root)
+        Filler = ttk.Label(root,style = "Small.TLabel")
         Filler.grid(row = 7, column = 1, columnspan = 2)
 
         def addStaff(fNameVal,sNameVal,eMailVal,pWordVal,pNumVal,pCodeVal):
@@ -403,7 +416,7 @@ def regStaff():
             root.destroy()
 
 
-        SaveButton = tk.Button(root, text = "Confirm", command = lambda: addStaff(fName.get(),sName.get(),eMail.get(),pWord.get(),pNum.get(),pCode.get()))
+        SaveButton = ttk.Button(root,style = "Button.TButton", text = "Confirm", command = lambda: addStaff(fName.get(),sName.get(),eMail.get(),pWord.get(),pNum.get(),pCode.get()))
         SaveButton.grid(row = 8, column = 1, columnspan = 2)
 
 

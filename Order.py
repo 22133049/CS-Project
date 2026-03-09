@@ -165,7 +165,7 @@ def placeOrder():
             # Find the matching product object to get its recipe
             for product in my_products:
                 if product.name == prod_name:
-                    # product.suppliesNeeded is likely a list of [supply_name, amount]
+                    # product.suppliesNeeded is a list of [supply_name, amount]
                     for s_name, s_qty in product.suppliesNeeded:
                         needed = int(s_qty) * quantity_ordered
                         
@@ -252,6 +252,8 @@ def placeOrder():
 
 def viewOrders():
     root = tk.Tk()
+    root.title("All Orders")
+    root.configure(bg = "black")
 
     with open("orders.pkl","rb") as file:
         my_objects = list(pickle.load(file))
@@ -260,6 +262,8 @@ def viewOrders():
 
     readord = []
     frames = []
+
+    tk.Label(root,bg = "black",fg = "white", font = ("Arial",20,"bold"),text = "All Orders:").pack()
 
     for obj in my_objects:
         temp = vars(obj)
@@ -317,7 +321,7 @@ def viewOrders():
         frames = []
 
         for order in readord:
-            frame = tk.Frame(root, bd=1, relief="solid", padx=5, pady=5)
+            frame = tk.Frame(root,bg = "white",highlightbackground="#FFFFFF",highlightthickness=2,bd=0 , relief="solid", padx=5, pady=5)
             frame.pack(fill="x", pady=2)
             frames.append(frame)
 
@@ -329,7 +333,7 @@ def viewOrders():
                 f"Cost: £{order['cost']} | "
                 f"Delivery Date: {order['delivDate']}"
             )
-            tk.Label(frame, text=text, anchor="w").pack(side="left", fill="x", expand=True)
+            tk.Label(frame, text=text, anchor="w",bg = "white", fg = "black").pack(side="left", fill="x", expand=True)
 
             
             tk.Button(frame, text="Update Status", command=lambda o=order: updateOrd(o, frames)).pack(side="right")

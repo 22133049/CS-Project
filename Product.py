@@ -1,6 +1,6 @@
 import random
 import tkinter as tk
-from tkinter import messagebox, StringVar, OptionMenu
+from tkinter import messagebox, StringVar, OptionMenu, ttk
 import pickle
 
 
@@ -29,6 +29,24 @@ class Product:
 
 def addProd():
     root = tk.Toplevel()
+    root.title("Add Product")
+    root.configure(bg = "black")
+
+    style = ttk.Style(root)
+    style.theme_use("clam")
+
+    style.configure("Main.TLabel",background = "black", foreground = "white", font = ("Arial",30,"bold"))
+    style.configure("Entry.TLabel",background = "black", foreground = "white", font = ("Arial",16,"bold"))
+
+    style.configure(
+    "Black.TMenubutton",   
+    background="black",         
+    foreground="white",
+    bordercolor="#FFFFFF",
+    borderwidth=2,
+    padding=5)
+
+    style.configure("Conf.TButton", background = "white",foreground = "black")
 
     Supply = []
     supply = []
@@ -42,35 +60,35 @@ def addProd():
 
     
 
-    tk.Label(root, text = "Add New Product",font =("Arial",30,'bold')).grid(row = 0, column = 0)
+    ttk.Label(root,style = "Main.TLabel", text = "Add New Product").grid(row = 0, column = 0)
     
 
 
     Name = tk.Entry(root)
     Name.grid(row = 1, column = 1)
-    NameLabel = tk.Label(root,text = "Name:")
+    NameLabel = ttk.Label(root,style = "Entry.TLabel",text = "Name:")
     NameLabel.grid(row = 1, column = 0)
 
-    DescLabel = tk.Label(root, text = "Description")
+    DescLabel = ttk.Label(root,style = "Entry.TLabel", text = "Description")
     DescLabel.grid(row = 2, column = 0)
     desc = tk.Entry(root)
     desc.grid(row = 2, column = 1)
 
-    PriceLabel = tk.Label(root, text = "Price: ")
+    PriceLabel = ttk.Label(root, style = "Entry.TLabel",text = "Price: ")
     PriceLabel.grid(row = 3, column = 0)
     price = tk.Entry(root)
     price.grid(row = 3, column = 1)
 
-    SuppliesNeededLabel = tk.Label(root, text = "Supplies Needed:")
+    SuppliesNeededLabel = ttk.Label(root,style = "Entry.TLabel", text = "Supplies Needed:")
     SuppliesNeededLabel.grid(row = 4, column = 0)
 
     opt = StringVar()
     opt.set(Supply[0])
 
-    SupplyMenu = OptionMenu(root, opt, *Supply)
+    SupplyMenu = ttk.OptionMenu(root, opt,Supply[0], *Supply,style = "Black.TMenubutton")
     SupplyMenu.grid(row = 4, column = 1)
 
-    QuantityLabel = tk.Label(root, text = "Quantity:")
+    QuantityLabel = ttk.Label(root,style = "Entry.TLabel", text = "Quantity:")
     QuantityLabel.grid(row = 5, column = 0)
     Quantity = tk.Entry(root)
     Quantity.grid(row = 5, column = 1)
@@ -82,7 +100,7 @@ def addProd():
             
         
 
-    tk.Button(root, text = "Add Supply", command= lambda: addSupply()).grid(row = 5, column = 2)
+    ttk.Button(root,style = "Conf.TButton", text = "Add Supply", command= lambda: addSupply()).grid(row = 5, column = 2,padx = 5,pady = 5)
 
     def confirmProd():
         name = Name.get()
@@ -126,13 +144,32 @@ def addProd():
         
 
 
-    tk.Button(root,text= "Confirm",command = lambda: confirmProd()).grid(row = 6, column = 1, columnspan = 2)
+    ttk.Button(root,style = "Conf.TButton",text= "Confirm",command = lambda: confirmProd()).grid(row = 6, column = 1, columnspan = 2 ,padx = 20 ,pady = 20)
 
 
 def editProd():
     root = tk.Toplevel()
 
     Products = [] # for Dropdown
+
+    root.title("Edit Product")
+    root.configure(bg = "black")
+
+    style = ttk.Style(root)
+    style.theme_use("clam")
+
+    style.configure("1Main.TLabel",background = "black", foreground = "white", font = ("Arial",30,"bold"))
+    style.configure("1Entry.TLabel",background = "black", foreground = "white", font = ("Arial",16,"bold"))
+
+    style.configure(
+    "1Black.TMenubutton",   
+    background="black",         
+    foreground="white",
+    bordercolor="#FFFFFF",
+    borderwidth=2,
+    padding=5)
+
+    style.configure("1Conf.TButton", background = "white",foreground = "black")
 
     
 
@@ -150,7 +187,7 @@ def editProd():
     opt = StringVar()
     opt.set(Products[0])
 
-    ProductMenu = OptionMenu(root, opt, *Products)
+    ProductMenu = ttk.OptionMenu(root, opt,Products[0], *Products,style = "1Black.TMenubutton")
     ProductMenu.grid(row = 0, column = 1)
 
     def changeProd():
@@ -163,6 +200,8 @@ def editProd():
         print(selected_product.suppliesNeeded)
 
         Supply = []
+
+        DefaultSupply = selected_product.suppliesNeeded
 
         for product in my_products:
             if product.name == opt.get():
@@ -179,51 +218,57 @@ def editProd():
         Name = tk.Entry(root)
         Name.insert(0,selected_product.name)
         Name.grid(row = 1, column = 1)
-        NameLabel = tk.Label(root,text = "Name:")
+        NameLabel = ttk.Label(root,style = "1Entry.TLabel",text = "Name:")
         NameLabel.grid(row = 1, column = 0)
 
-        DescLabel = tk.Label(root, text = "Description")
+        DescLabel = ttk.Label(root,style = "1Entry.TLabel", text = "Description")
         DescLabel.grid(row = 2, column = 0)
         desc = tk.Entry(root)
         desc.insert(0,selected_product.Desc)
         desc.grid(row = 2, column = 1)
         
 
-        PriceLabel = tk.Label(root, text = "Price: ")
+        PriceLabel = ttk.Label(root,style = "1Entry.TLabel", text = "Price: ")
         PriceLabel.grid(row = 3, column = 0)
         price = tk.Entry(root)
         price.insert(0,selected_product.Price)
         price.grid(row = 3, column = 1)
 
-        SuppliesNeededLabel = tk.Label(root, text = "Supplies Needed:")
+        SuppliesNeededLabel = ttk.Label(root,style = "1Entry.TLabel", text = "Supplies Needed:")
         SuppliesNeededLabel.grid(row = 4, column = 0)
 
         opt = StringVar()
         opt.set(Supply[0])
 
-        SupplyMenu = OptionMenu(root, opt, *Supply)
+        SupplyMenu = ttk.OptionMenu(root, opt,Supply[0], *Supply,style="1Black.TMenubutton")
         SupplyMenu.grid(row = 4, column = 1)
 
-        QuantityLabel = tk.Label(root, text = "Quantity:")
+        QuantityLabel = ttk.Label(root,style = "1Entry.TLabel", text = "Quantity:")
         QuantityLabel.grid(row = 5, column = 0)
         Quantity = tk.Entry(root)
         Quantity.grid(row = 5, column = 1)
 
+        supply = []
+
+        
+
         def addSupply():
             
-            supply.append(opt.get())
-            supply.append(int(Quantity.get()))
+                    new_item = [opt.get(), int(Quantity.get())]
+                    supply.append(new_item)
+
                           
 
-        tk.Button(root, text = "Add Supply", command= lambda: addSupply()).grid(row = 5, column = 2)
+        ttk.Button(root,style = "1Conf.TButton",  text = "Add Supply", command= lambda: addSupply()).grid(row = 5, column = 2)
 
         def confirmProd():
             name = Name.get()
             suppliesNeeded = supply
 
             if not supply:
-                tk.messagebox.showerror("Error","No Supplies Selected")
-                return
+                suppliesNeeded = DefaultSupply
+                
+                
             Desc = desc.get()
             Price = float(price.get())
 
@@ -256,12 +301,12 @@ def editProd():
                 tk.messagebox.showinfo("Success","Successfully Added Product")
                 root.destroy()
 
-        tk.Button(root, text = "Confirm Edits",command = lambda:confirmProd()).grid(row = 6, column = 1)
+        ttk.Button(root,style = "1Conf.TButton", text = "Confirm Edits",command = lambda:confirmProd()).grid(row = 6, column = 1)
 
 
             
 
-    tk.Button(root,text = "Confirm", command = lambda: changeProd()).grid(row = 6, column = 1)
+    ttk.Button(root,style = "1Conf.TButton", text = "Confirm", command = lambda: changeProd()).grid(row = 6, column = 1)
 
   
 

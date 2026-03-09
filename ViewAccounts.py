@@ -1,45 +1,55 @@
 import tkinter as tk
-from tkinter import messagebox
+from tkinter import messagebox, ttk
 import pickle
 
 def viewAccounts():
     root = tk.Tk()
 
-    frameRight = tk.Label(root)
+    root.title("Search Accounts")
+    root.configure(bg = "black")
+    style = ttk.Style(root)
+    style.theme_use("clam")
+
+    style.configure("Main.TLabel",background="black",foreground="white",font=("Arial",30,"bold"))
+    style.configure("Entry.TLabel",background="black",foreground="white",font=("Arial",16,"bold"))
+    style.configure("Button.TButton", background = "white",foreground = "black")
+    
+
+    frameRight = ttk.Label(root,style="Entry.TLabel")
     frameRight.grid(row = 0, column = 3)
-    frameLeft = tk.Label(root)
+    frameLeft = ttk.Label(root,style="Entry.TLabel")
     frameLeft.grid(row = 0, column = 0)
 
 
-    Registration = tk.Label(root, text = "Search Accounts", font =("Arial", 20), anchor = "center")
+    Registration = ttk.Label(root,style = "Main.TLabel", text = "Search Accounts", anchor = "center")
     Registration.grid(row = 0, column = 1, columnspan = 2)
 
-    eMailLabel = tk.Label(root, text = "E-Mail:")
+    eMailLabel = ttk.Label(root,style = "Entry.TLabel", text = "E-Mail:")
     eMailLabel.grid(row = 1, column = 1)
     eMail = tk.Entry(root)
     eMail.grid(row = 1, column = 2)
 
-    fNameLabel = tk.Label(root,text = "First Name:")
+    fNameLabel = ttk.Label(root,style = "Entry.TLabel",text = "First Name:")
     fNameLabel.grid(row = 3, column = 1)
     fName = tk.Entry(root,)
     fName.grid(row = 3, column = 2)
 
-    sNameLabel = tk.Label(root,text = "Surname:")
+    sNameLabel = ttk.Label(root,style = "Entry.TLabel",text = "Surname:")
     sNameLabel.grid(row = 4, column = 1)
     sName = tk.Entry(root)
     sName.grid(row = 4, column = 2)
 
-    pNumLabel = tk.Label(root,text = "Phone Number:")
+    pNumLabel = ttk.Label(root,style = "Entry.TLabel",text = "Phone Number:")
     pNumLabel.grid(row = 5, column = 1)
     pNum = tk.Entry(root)
     pNum.grid(row = 5, column = 2)
 
-    pCodeLabel = tk.Label(root,text = "Post Code:")
+    pCodeLabel = ttk.Label(root,style = "Entry.TLabel",text = "Post Code:")
     pCodeLabel.grid(row = 6, column = 1)
     pCode = tk.Entry(root)
     pCode.grid(row = 6, column = 2)
 
-    Filler = tk.Label(root)
+    Filler = ttk.Label(root,style = "Entry.TLabel")
     Filler.grid(row = 7, column = 1, columnspan = 2)
 
 
@@ -132,7 +142,7 @@ def viewAccounts():
 
         
 
-    SearchButton = tk.Button(root, text= "Search for Users",command = lambda: SearchUsers())
+    SearchButton = ttk.Button(root,style = "Button.TButton", text= "Search for Users",command = lambda: SearchUsers())
     SearchButton.grid(row = 8,column = 2)
 
     root.mainloop()
