@@ -19,11 +19,11 @@ class Account():
         self.pCode = pCode
         self.isAdmin = isAdmin
 
-        if not id and self.isAdmin:
+        if not id and self.isAdmin: #to generate ID's
             try:
                 with open("staff.pkl","rb") as file:
                     my_objects = list(pickle.load(file))
-                id = "s" + str(int(my_objects[-1].id[1:]) + 1).zfill(2)
+                id = "s" + str(int(my_objects[-1].id[1:]) + 1).zfill(2) # looks at the last entry in the file and takes off the "s" bit and adds on its own "s" with the latest entry + 1
 
             except:
                 id = "s" + str(1).zfill(2)
@@ -75,6 +75,8 @@ def SignUpScreen():
         Registration = ttk.Label(root, text = "Sign Up",style = "Label.TLabel", font =("Arial", 20,"bold"), anchor = "center")
         Registration.grid(row = 0, column = 1, columnspan = 2)
 
+
+        #ENTRY WIDGETS
         eMailLabel = ttk.Label(root,style = "Label.TLabel", text = "E-Mail:",font = ("Arial",14,"bold"))
         eMailLabel.grid(row = 1, column = 1)
         eMail = tk.Entry(root)
@@ -111,7 +113,7 @@ def SignUpScreen():
         def addCustomer(fNameVal,sNameVal,eMailVal,pWordVal,pNumVal,pCodeVal):
     
             
-
+            #VALIDATION
             if len(fNameVal) > 10 or len(fNameVal) <= 0:
                 tk.messagebox.showerror("Error","First Name too long or empty")
                 return
@@ -151,7 +153,7 @@ def SignUpScreen():
                 tk.messagebox.showerror("Error", "Invalid Postcode")
                 return
 
-            temp = Account(None, fNameVal, sNameVal,eMailVal,pWordVal,pNumVal,pCodeVal, False)
+            temp = Account(None, fNameVal, sNameVal,eMailVal,pWordVal,pNumVal,pCodeVal, False)#creates the object
             try:
                     print(temp.get_attributes())
                           
@@ -171,7 +173,7 @@ def SignUpScreen():
                     my_objects.append(temp)
                     with open("customers.pkl", "wb+") as file:
                         pickle.dump(my_objects, file)
-                    tk.messagebox.showinfo("Success","Successfully Signed Up")
+                    tk.messagebox.showinfo("Success","Successfully Signed Up") #if file doesn't exist, makes one
                     
             root.destroy()
             from Project import MainScreen
@@ -253,7 +255,7 @@ def EditAccount():
         temp = Account(id,fName,sName,eMail,pWord,pNum,pCode,isAdmin)
 
 
-        if user.isAdmin == True:
+        if user.isAdmin == True: #if an admin then save to admin file else save to customer
             with open("staff.pkl","rb") as file:
                 my_objects = list(pickle.load(file))
 
@@ -315,6 +317,7 @@ def regStaff():
         Registration = ttk.Label(root, style = "White.TLabel",text = "Register Staff", anchor = "center")
         Registration.grid(row = 0, column = 1, columnspan = 2)
 
+        #ENTRY WIDGETS
         eMailLabel = ttk.Label(root,  style = "Small.TLabel",text = "E-Mail:")
         eMailLabel.grid(row = 1, column = 1)
         eMail = ttk.Entry(root)
@@ -351,7 +354,7 @@ def regStaff():
         def addStaff(fNameVal,sNameVal,eMailVal,pWordVal,pNumVal,pCodeVal):
 
             
-
+            #VALIDATION
             if len(fNameVal) > 10 or len(fNameVal) <= 0:
                 tk.messagebox.showerror("Error","First Name too long or empty")
                 return
@@ -458,7 +461,7 @@ def LogInScreen():
 
         found = False
 
-        for customer in my_objects:
+        for customer in my_objects: #checks through customer file first
             if customer.eMail == eMailentry and customer.pWord == pWordentry and found == False:
                 found = True
                 tk.messagebox.showinfo("Success","Logged In")
@@ -472,7 +475,7 @@ def LogInScreen():
                 return
 
                 
-        for staff in my_staff:
+        for staff in my_staff:#then checks through staff file
             if staff.eMail == eMailentry and staff.pWord == pWordentry and found == False:
                 found = True
                 tk.messagebox.showinfo("success","Logged in")
@@ -497,7 +500,7 @@ def deleteAccount(menu):
     with open("current_user.pkl","rb") as file2:
         user = pickle.load(file2)
 
-    for obj in my_objects:
+    for obj in my_objects:# looks for correct account to delete and also gives confirmation
         if obj.id == user.id:
             opt = tk.messagebox.askquestion("Are you Sure?","Are you sure you want to delete your account?", parent = menu)
 
@@ -514,4 +517,5 @@ def deleteAccount(menu):
             
             else:
                 return
+
 
