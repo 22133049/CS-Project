@@ -1,11 +1,31 @@
 import tkinter as tk
-from tkinter import messagebox
+from tkinter import messagebox, ttk
 import pickle
 from Classes.Stock import Stock
 
 
 def openInv():
     root = tk.Tk()
+    root.title("Inventory")
+    root.configure(bg = "black")
+    root.geometry("300x300")
+    style = ttk.Style(root)
+    style.theme_use("clam")
+    style.configure("Text.TLabel",background = "black",foreground = "white", font = ("Arial",20,"bold")
+
+    Stocklist = tk.Listbox(root,height = 10, width = 15)
+
+    with open("inventory.pkl","rb") as inv:
+        stock = list(pickle,load(inv))
+        
+    CurrentStock = {}
+    for obj in stock:
+        CurrentStock[obj.name] = obj.quantity
+    
+        
+
+    
+    
 
 
     def getStock():
@@ -97,3 +117,4 @@ def openInv():
     
 
     root.mainloop()
+
