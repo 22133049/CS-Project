@@ -21,13 +21,12 @@ def openInv():
     root = tk.Tk()
     root.title("Inventory")
     root.configure(bg = "black")
-    root.geometry("300x300")
     style = ttk.Style(root)
     style.theme_use("clam")
     style.configure("Text.TLabel",background = "black",foreground = "white", font = ("Arial",20,"bold"))
     style.configure("BButton.TButton",background = "white",foreground = "black", bordercolor = "#000000")
 
-    ttk.Label(root,style = "Text.TLabel", text = "Inventory").grid(row = 0, column = 0, anchor = "center")
+    ttk.Label(root,style = "Text.TLabel", text = "Inventory",anchor = "center").grid(row = 0, column = 0)
 
                     
 
@@ -42,7 +41,7 @@ def openInv():
         stock = []
 
     if not stock:
-        listbox.insert(0,"No Stock, please click Add Stock")
+        Stocklist.insert(0,"No Stock, please click Add Stock")
 
     else:
         
@@ -66,31 +65,29 @@ def openInv():
     
 
 
-    def getStock():
-
-        with open("inventory.pkl","rb") as inv:
-            stock = list(pickle.load(inv))
-
-        tk.messagebox.showinfo("Current Stock",
-                           "\n".join(str(item) for item in stock))
-
-        root.destroy()
 
 
     def addStock():
 
         addmenu = tk.Toplevel(root)
-        NameLabel = tk.Label(addmenu, text = "Name:")
+        style = ttk.Style(addmenu)
+        addmenu.title("Add Stock")
+        addmenu.configure(background = "black")
+        style.theme_use("clam")
+        style.configure("AText.TLabel",background = "black",foreground = "white", font = ("Arial",14,"bold"))
+        style.configure("AButton.TButton",background = "white",foreground = "black", bordercolor = "#000000")
+
+        NameLabel = ttk.Label(addmenu,style = "AText.TLabel", text = "Name:")
         NameLabel.grid(row = 0, column = 0)
         Name = tk.Entry(addmenu)
         Name.grid(row = 0, column = 1)
 
-        QuantityLabel = tk.Label(addmenu, text = "Quantity:")
+        QuantityLabel = ttk.Label(addmenu, style = "AText.TLabel",text = "Quantity:")
         QuantityLabel.grid(row = 1, column = 0)
         Quantity = tk.Entry(addmenu)
         Quantity.grid(row = 1, column = 1)
 
-        confirmButton = tk.Button(addmenu, text = "Confirm", command = lambda: confirm())
+        confirmButton = ttk.Button(addmenu,style = "AButton.TButton", text = "Confirm", command = lambda: confirm())
         confirmButton.grid(row = 2, column = 1, columnspan= 2)
 
         
@@ -145,10 +142,9 @@ def openInv():
 
 
     addButton = ttk.Button(root,style = "BButton.TButton", text = "Add Stock", command = lambda: addStock())
-    addButton.grid(row = 1, column = 2)
+    addButton.grid(row = 2, column = 0)
 
-    getButton = ttk.Button(root,style = "BButton.TButton", text = "Get Stock", command = lambda: getStock())
-    getButton.grid(row = 1, column = 3)
+
 
 
 

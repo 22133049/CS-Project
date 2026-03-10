@@ -1,6 +1,6 @@
 import random
 from Product import Product
-from Classes.Stock import Stock
+from Inventory import Stock
 import pickle
 import tkinter as tk
 from tkinter import messagebox, StringVar, OptionMenu, ttk
@@ -40,6 +40,8 @@ def placeOrder():
 
     root.title("Place Order")
     root.configure(bg = "pink")
+
+    #STYLING
     style = ttk.Style()
     style.theme_use("clam")
 
@@ -62,13 +64,12 @@ def placeOrder():
     ProdSelect = []
     Supplies = []
     
-
+    #GRAB PRODUCTS FROM FILE
 
     with open("products.pkl","rb") as file:
         my_products = list(pickle.load(file))
 
-    for item in my_products:
-        print(item)
+    for item in my_products:#takes product and display the name and price into dropdown menu
         safename = item.name.strip("{}")
         display = f"{item.name} (£{item.Price})"
         Products.append(display)
@@ -110,12 +111,11 @@ def placeOrder():
         prodName = prodOpt.split(" (£")[0]
         prodPrice = ProductPrices[prodName]
         ProdSelect.append([prodName,prodPrice,quantity.get()])
-        print(ProdSelect)
         TotalPrice = 0
         for i in ProdSelect:
             x = i[1] * int(i[2])
             TotalPrice = TotalPrice + x
-        cost.config(text = "£" + str(TotalPrice))
+        cost.config(text = str(TotalPrice))
 
 
     def confirmOrder():
@@ -147,21 +147,16 @@ def placeOrder():
         cusID = my_objects.id
 
         today = date.today()
-        print(today)
 
         display_date = today.strftime("%d/%m/%Y")
-        print(display_date)
 
         delivery_date = today + timedelta(weeks=2)
 
         display_date2 = delivery_date.strftime("%d/%m/%Y")
-        print(display_date2)
 
         with open("inventory.pkl","rb") as file:
             my_stock = list(pickle.load(file))
 
-        for obj in my_stock:
-            print(obj.name,obj.quantity)
 
         total_supply_needed = {}
 
@@ -209,8 +204,7 @@ def placeOrder():
         temp = Order(None,cusID,ProdList,display_date,display_date2,"Making",EndCost,None,canCreate)
 
         try:
-                    print(ProdList)
-                    print(temp.get_attributes())
+
                           
                     with open("orders.pkl", "rb")as file:
                         my_objects = list(pickle.load(file))
@@ -264,7 +258,7 @@ def viewOrders():
     with open("orders.pkl","rb") as file:
         my_objects = list(pickle.load(file))
 
-    print(my_objects)
+  
 
     readord = []
     frames = []

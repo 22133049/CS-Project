@@ -32,6 +32,9 @@ def addProd():
     root.title("Add Product")
     root.configure(bg = "black")
 
+
+    #STYLING
+
     style = ttk.Style(root)
     style.theme_use("clam")
 
@@ -62,6 +65,8 @@ def addProd():
 
     ttk.Label(root,style = "Main.TLabel", text = "Add New Product").grid(row = 0, column = 0)
     
+
+    #WIDGETS
 
 
     Name = tk.Entry(root)
@@ -94,6 +99,8 @@ def addProd():
     Quantity.grid(row = 5, column = 1)
 
     def addSupply():
+
+        #FOR ADDING NEW SUPPLY TO THE RECIPE
 
         new_item = [opt.get(), int(Quantity.get())]
         supply.append(new_item)
@@ -130,7 +137,7 @@ def addProd():
 
 
         except Exception as e:
-            print("Exception ocured:", e)
+    
             my_objects = []
             my_objects.append(temp)
             with open("products.pkl", "wb+") as file:
@@ -195,10 +202,6 @@ def editProd():
         nonlocal opt #makes the opt variable able to be used outside of its normal place
         selected = opt.get()
         selected_product = ProductLookup[selected]
-        print(selected_product.name)
-        print(selected_product.Price)
-        print(selected_product.suppliesNeeded)
-
         Supply = []
 
         DefaultSupply = selected_product.suppliesNeeded
@@ -214,7 +217,7 @@ def editProd():
             Supply.append(entry)
             
 
-            
+        #ENTRY WIDGETS
         Name = tk.Entry(root)
         Name.insert(0,selected_product.name)
         Name.grid(row = 1, column = 1)
@@ -293,7 +296,6 @@ def editProd():
 
 
             except Exception as e:
-                print("Exception ocured:", e)
                 my_objects = []
                 my_objects.append(temp)
                 with open("products.pkl", "wb+") as file:

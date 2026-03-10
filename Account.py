@@ -155,7 +155,6 @@ def SignUpScreen():
 
             temp = Account(None, fNameVal, sNameVal,eMailVal,pWordVal,pNumVal,pCodeVal, False)#creates the object
             try:
-                    print(temp.get_attributes())
                           
                     with open("customers.pkl", "rb")as file:
                         my_objects = list(pickle.load(file))
@@ -280,8 +279,7 @@ def EditAccount():
                 pickle.dump(my_objects,file)
 
         
-        print(temp.get_attributes())
-        print(my_objects)
+
 
     ttk.Button(root,style = "Button.TButton",text = "Change Details",command = lambda: change()).grid(row = 6, column = 1)
     
@@ -297,6 +295,10 @@ def regStaff():
         root = tk.Tk()
         root.title("Register Staff")
         root.configure(bg = "black")
+
+
+
+        #STYLING
 
         style = ttk.Style(root)
         style.theme_use("clam")
@@ -395,8 +397,7 @@ def regStaff():
                 return
 
             temp = Account(None, fNameVal, sNameVal,eMailVal,pWordVal,pNumVal,pCodeVal, True)
-            try:
-                    print(temp.get_attributes())
+            try: #if file exists then append to it but if it doesnt then make a new file
                           
                     with open("staff.pkl", "rb")as file:
                         my_objects = list(pickle.load(file))
