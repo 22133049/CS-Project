@@ -80,12 +80,17 @@ def placeOrder():
     opt = StringVar()
     opt.set(Products[0])
 
+
+
+    
     ProductMenuLabel = ttk.Label(root,style = "Label.TLabel", text = "Select Products:")
     ProductMenuLabel.grid(row =  1, column = 0)
 
     ProductMenu = ttk.OptionMenu(root, opt,Products[0], *Products,style = "Custom.TMenubutton")
     ProductMenu.grid(row = 1, column = 1)
 
+
+    #ENTRY WIDGETS
     QuantityLabel = ttk.Label(root,style = "Label.TLabel", text = "Quantity",font = ("Arial",14,"bold"))
     QuantityLabel.grid(row = 2, column= 0)
     quantity = tk.Entry(root)
@@ -99,6 +104,7 @@ def placeOrder():
         
 
     def addProduct():
+        #FOR ADDING A PRODUCT TO THE BASKET
         prodOpt = opt.get()
 
         prodName = prodOpt.split(" (£")[0]
@@ -283,7 +289,7 @@ def viewOrders():
                 o.get('supply'),
                 o.get('canCreate'),
             )
-            new_orders.append(new_order)
+            new_orders.append(new_order)#reappends the order to file if status is changed
 
         with open("orders.pkl", "wb") as file:
             pickle.dump(new_orders, file)
@@ -320,7 +326,7 @@ def viewOrders():
             frame.pack_forget()
         frames = []
 
-        for order in readord:
+        for order in readord: #for each order make a new frame and pack it
             frame = tk.Frame(root,bg = "white",highlightbackground="#FFFFFF",highlightthickness=2,bd=0 , relief="solid", padx=5, pady=5)
             frame.pack(fill="x", pady=2)
             frames.append(frame)
@@ -405,3 +411,4 @@ def cancelOrder():
 
     
     
+
