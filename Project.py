@@ -10,7 +10,7 @@ from Nav import goto
  
 from LogIn import LogInScreen
 
-
+#MASTER FILE RUN PROJECT FROM THIS FILE
 def MainScreen():
 
     root = tk.Tk()
@@ -46,4 +46,5 @@ def MainScreen():
 
 if __name__ == "__main__":
      MainScreen()
+
 
