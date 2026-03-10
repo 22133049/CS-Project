@@ -48,11 +48,11 @@ def openInv():
         
         CurrentStock = {}
         for obj in stock:
-            CurrentStock[obj.name] = obj.quantity
+            CurrentStock[obj.name] = obj.quantity# appending "name: quantity" to dictionary
     
         for name,qty in CurrentStock.items():
             
-            Stocklist.insert(END,f"{name} ({qty})")
+            Stocklist.insert(END,f"{name} ({qty})")#END puts each new entry at the bottom
 
     Stocklist.grid(row = 1, column = 0)
 
@@ -155,6 +155,7 @@ def openInv():
     
 
     root.mainloop()
+
 
 
 
