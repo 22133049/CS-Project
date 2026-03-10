@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import messagebox, ttk
+from tkinter import messagebox, ttk, END
 import pickle
 from Classes.Stock import Stock
 
@@ -11,7 +11,11 @@ def openInv():
     root.geometry("300x300")
     style = ttk.Style(root)
     style.theme_use("clam")
-    style.configure("Text.TLabel",background = "black",foreground = "white", font = ("Arial",20,"bold")
+    style.configure("Text.TLabel",background = "black",foreground = "white", font = ("Arial",20,"bold"))
+
+    ttk.Label(root,style = "Text.TLabel", text = "Inventory").grid(row = 0, column = 0, anchor = "center")
+
+                    
 
     Stocklist = tk.Listbox(root,height = 10, width = 15)
 
@@ -21,6 +25,16 @@ def openInv():
     CurrentStock = {}
     for obj in stock:
         CurrentStock[obj.name] = obj.quantity
+
+    for name,qty in CurrentStock.items():
+        
+        Stocklist.insert(END,f"{name} ({qty})")
+
+    Stocklist.grid(row = 1, column = 0)
+
+
+
+    
     
         
 
@@ -107,14 +121,15 @@ def openInv():
 
 
     addButton = tk.Button(root, text = "Add Stock", command = lambda: addStock())
-    addButton.grid(row = 1, column = 0)
+    addButton.grid(row = 1, column = 2)
 
     getButton = tk.Button(root, text = "Get Stock", command = lambda: getStock())
-    getButton.grid(row = 1, column = 1)
+    getButton.grid(row = 1, column = 3)
 
 
 
     
 
     root.mainloop()
+
 
