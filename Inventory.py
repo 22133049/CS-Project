@@ -12,6 +12,7 @@ def openInv():
     style = ttk.Style(root)
     style.theme_use("clam")
     style.configure("Text.TLabel",background = "black",foreground = "white", font = ("Arial",20,"bold"))
+    style.configure("BButton.TButton",background = "white",foreground = "black", bordercolor = "#000000")
 
     ttk.Label(root,style = "Text.TLabel", text = "Inventory").grid(row = 0, column = 0, anchor = "center")
 
@@ -20,7 +21,7 @@ def openInv():
     Stocklist = tk.Listbox(root,height = 10, width = 15)
 
     with open("inventory.pkl","rb") as inv:
-        stock = list(pickle,load(inv))
+        stock = list(pickle.load(inv))
         
     CurrentStock = {}
     for obj in stock:
@@ -120,10 +121,10 @@ def openInv():
  
 
 
-    addButton = tk.Button(root, text = "Add Stock", command = lambda: addStock())
+    addButton = ttk.Button(root,style = "BButton.TButton", text = "Add Stock", command = lambda: addStock())
     addButton.grid(row = 1, column = 2)
 
-    getButton = tk.Button(root, text = "Get Stock", command = lambda: getStock())
+    getButton = ttk.Button(root,style = "BButton.TButton", text = "Get Stock", command = lambda: getStock())
     getButton.grid(row = 1, column = 3)
 
 
@@ -131,5 +132,6 @@ def openInv():
     
 
     root.mainloop()
+
 
 
