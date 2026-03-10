@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import messagebox, ttk, END
 import pickle
-from Classes.Stock import Stock
+from Stock import Stock
 
 
 def openInv():
@@ -142,6 +142,7 @@ def openInv():
     
 
     root.mainloop()
+
 
 
 
