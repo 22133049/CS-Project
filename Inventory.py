@@ -20,16 +20,26 @@ def openInv():
 
     Stocklist = tk.Listbox(root,height = 10, width = 15)
 
-    with open("inventory.pkl","rb") as inv:
-        stock = list(pickle.load(inv))
-        
-    CurrentStock = {}
-    for obj in stock:
-        CurrentStock[obj.name] = obj.quantity
+    try:
 
-    for name,qty in CurrentStock.items():
+        with open("inventory.pkl","rb") as inv:
+            stock = list(pickle.load(inv))
+
+    except:
+        stock = []
+
+    if not stock:
+        listbox.insert(0,"No Stock, please click Add Stock")
+
+    else:
         
-        Stocklist.insert(END,f"{name} ({qty})")
+        CurrentStock = {}
+        for obj in stock:
+            CurrentStock[obj.name] = obj.quantity
+    
+        for name,qty in CurrentStock.items():
+            
+            Stocklist.insert(END,f"{name} ({qty})")
 
     Stocklist.grid(row = 1, column = 0)
 
@@ -132,6 +142,7 @@ def openInv():
     
 
     root.mainloop()
+
 
 
 
