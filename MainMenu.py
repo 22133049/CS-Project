@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import ttk
 from tkinter import messagebox
 from Order import placeOrder, cancelOrder
-from Account import EditAccount, deleteAccount
+from Account import EditAccount, deleteAccount, LogOut
 
 
 
@@ -53,10 +53,18 @@ def MenuScreen():
 
 
     ttk.Label(menu,text="",style = "Label.TLabel").grid(row=9,column=0)
+
+    ttk.Button(menu,text = "Leave Review",style = "Button.TButton", command = lambda:leaveReview).grid(row = 10, column = 0)
+
+    ttk.Label(menu,text="",style = "Label.TLabel").grid(row=11,column=0)
     
 
     deleteButton = ttk.Button(menu, text ="Delete Account",style = "Button.TButton",command = lambda: deleteAccount(menu))
-    deleteButton.grid(row = 10, column = 0,padx = 5, pady =5)
+    deleteButton.grid(row = 12, column = 0,padx = 5, pady =5)
+
+    ttk.Label(menu,style = "Label.TLabel", text="").grid(row = 13, column = 0)
+
+    ttk.Button(menu,style= "Button.TButton", text = "Log Out",command = lambda: LogOut(menu)).grid(row = 14, column = 0)
 
     
 

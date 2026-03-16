@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import messagebox, ttk, END
+from tkinter import messagebox, ttk, END,StringVar
 import pickle
 
 class Stock:
@@ -97,6 +97,10 @@ def openInv():
         def confirm():
 
             name = Name.get()
+
+            if not name:
+                tk.messagebox.showerror("Error","Name not entered")
+                return
             try:
 
                 quantity = int(Quantity.get())
@@ -143,6 +147,97 @@ def openInv():
 
     addButton = ttk.Button(root,style = "BButton.TButton", text = "Add Stock", command = lambda: addStock())
     addButton.grid(row = 2, column = 0)
+
+
+    def removeStock():
+
+        addmenu = tk.Toplevel(root)
+        style = ttk.Style(addmenu)
+        addmenu.title("Remove Stock")
+        addmenu.configure(background = "black")
+        style.theme_use("clam")
+        style.configure("AText.TLabel",background = "black",foreground = "white", font = ("Arial",14,"bold"))
+        style.configure("AButton.TButton",background = "white",foreground = "black", bordercolor = "#000000")
+        style.configure(
+        "1Black.TMenubutton",   
+        background="black",         
+        foreground="white",
+        bordercolor="#FFFFFF",
+        borderwidth=2,
+        padding=5)
+
+        Stock = []
+
+        with open("inventory.pkl","rb") as file:
+            my_objects = list(pickle.load(file))
+
+        StockLookup = {}
+
+        for item in my_objects:
+            display = f"{item.name}"
+            Stock.append(display)
+            StockLookup[display] = item
+
+        if Stock:
+
+            opt = StringVar(master = addmenu)
+            opt.set(Stock[0])
+
+            StockMenu = ttk.OptionMenu(addmenu, opt,Stock[0], *Stock,style = "1Black.TMenubutton")
+            StockMenu.grid(row = 0, column = 1,padx = 20,pady = 20)
+
+        else:
+            tk.messagebox.showerror("Empty","Stock List is Empty")
+
+        def confirm():
+            nonlocal opt
+            for obj in my_objects:
+                if obj.name == opt.get():
+                    StockO = obj
+                    my_objects.remove(obj)
+
+                    
+                    break
+
+            StockMenu.destroy()
+            conf.destroy()
+
+            ttk.Label(addmenu,text = "Quantity: ", style = "AText.TLabel").grid(row = 1,column = 0)
+            QuantityE = ttk.Entry(addmenu)
+            QuantityE.grid(row = 1, column = 1)
+
+
+            def remove():
+                nonlocal StockO
+                if QuantityE.get().isdigit() == False:
+                    tk.messagebox.showerror("Invalid","Invalid Number")
+                    return
+                    
+                Amount = "Remove" + " " +  str(QuantityE.get()) + " " + opt.get() + "?"
+                opt2 = tk.messagebox.askyesno("Are you Sure?",Amount)
+                if opt2:
+                    StockO.quantity = StockO.quantity - int(QuantityE.get())
+
+                my_objects.append(StockO)
+                with open("inventory.pkl","wb+") as file:
+                    pickle.dump(my_objects,file)
+                        
+                    
+
+            ttk.Button(addmenu,text = "Confirm", style = "BButton.TButton", command= lambda: remove()).grid(row = 2, column = 0,padx = 20,pady = 10)
+
+        
+            
+            
+
+
+        conf =ttk.Button(addmenu, text = "Confirm", style = "BButton.TButton",command= lambda: confirm())
+        conf.grid(row = 1,column = 1,padx = 20,pady = 10)
+        
+
+
+    RemoveButton = ttk.Button(root,style = "BButton.TButton", text = "Remove Stock", command = lambda: removeStock())
+    RemoveButton.grid(row = 2, column = 1)
 
 
 

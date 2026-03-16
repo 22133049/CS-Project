@@ -108,6 +108,12 @@ def placeOrder():
         #FOR ADDING A PRODUCT TO THE BASKET
         prodOpt = opt.get()
 
+        try:
+            int(quantity.get())
+        except ValueError:
+            tk.messagebox.showerror("Failure","Quantity must be number")
+            return
+
         prodName = prodOpt.split(" (£")[0]
         prodPrice = ProductPrices[prodName]
         ProdSelect.append([prodName,prodPrice,quantity.get()])
@@ -119,6 +125,13 @@ def placeOrder():
 
 
     def confirmOrder():
+
+        try:
+            int(quantity.get())
+        except ValueError:
+            tk.messagebox.showerror("Failure","Quantity must be number")
+            return
+
 
         if not quantity.get():
             tk.messagebox.showerror("Failure, no quantity selected")
@@ -191,6 +204,13 @@ def placeOrder():
             # If a required supply isn't even in the inventory file
             if not found_in_stock:
                 canCreate = False
+
+        if canCreate: #Actually takes away the stocks
+            for supply_name, total_needed in total_supply_needed.items():
+                for obj in my_stock:
+                    if obj.name == supply_name:
+                        obj.quantity -= total_needed
+                        break
                     
         with open("inventory.pkl","wb+") as file:
             pickle.dump(my_stock,file)
@@ -201,7 +221,9 @@ def placeOrder():
     
             
 
-        temp = Order(None,cusID,ProdList,display_date,display_date2,"Making",EndCost,None,canCreate)
+        temp = Order(None,cusID,ProdList,display_date,display_date2,"Making",EndCost,total_supply_needed,canCreate)
+
+        print(temp.get_attributes())
 
         try:
 
@@ -317,27 +339,29 @@ def viewOrders():
 
     def showOrders(frames):
         for frame in frames:
-            frame.pack_forget()
-        frames = []
+            frame.destroy()
+        frames.clear()
 
-        for order in readord: #for each order make a new frame and pack it
-            frame = tk.Frame(root,bg = "white",highlightbackground="#FFFFFF",highlightthickness=2,bd=0 , relief="solid", padx=5, pady=5)
-            frame.pack(fill="x", pady=2)
-            frames.append(frame)
+        for order in readord:
+            if order['ordStat'] == "Making":#for each order make a new frame and pack it
+                frame = tk.Frame(root,bg = "white",highlightbackground="#FFFFFF",highlightthickness=2,bd=0 , relief="solid", padx=5, pady=5)
+                frame.pack(fill="x", pady=2)
+                frames.append(frame)
 
-            text = (
-                f"Order #{order['id']} | "
-                f"Customer: {order['cusID']} | "
-                f"Products: {order['contents']} | "
-                f"Status: {order['ordStat']} | "
-                f"Cost: £{order['cost']} | "
-                f"Delivery Date: {order['delivDate']}"
-            )
-            tk.Label(frame, text=text, anchor="w",bg = "white", fg = "black").pack(side="left", fill="x", expand=True)
+                text = (
+                    f"Order #{order['id']} | "
+                    f"Customer: {order['cusID']} | "
+                    f"Products: {order['contents']} | "
+                    f"Status: {order['ordStat']} | "
+                    f"Cost: £{order['cost']} | "
+                    f"Delivery Date: {order['delivDate']} |"
+                    f"Can Create: {order['canCreate']}"
+                )
+                tk.Label(frame, text=text, anchor="w",bg = "white", fg = "black").pack(side="left", fill="x", expand=True)
+
+                
 
             
-            tk.Button(frame, text="Update Status", command=lambda o=order: updateOrd(o, frames)).pack(side="right")
-        
     showOrders(frames)
 
 

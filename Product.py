@@ -6,11 +6,12 @@ import pickle
 
 
 class Product:
-    def __init__(self, id, name, suppliesNeeded,Desc,Price):
+    def __init__(self, id, name, suppliesNeeded,Desc,Price,Reviews):
         self.name = name
         self.Desc = Desc
         self.Price = Price
         self.suppliesNeeded = suppliesNeeded
+        self.Reviews = Reviews
 
         if not id:
             try:
@@ -102,8 +103,15 @@ def addProd():
 
         #FOR ADDING NEW SUPPLY TO THE RECIPE
 
-        new_item = [opt.get(), int(Quantity.get())]
-        supply.append(new_item)
+        try:
+            SupQuant = int(Quantity.get())
+            new_item = [opt.get(), SupQuant]
+            supply.append(new_item)
+        except ValueError:
+            tk.messagebox.showerror("Error","Quantity is not a number")
+            return
+
+
             
         
 
@@ -111,15 +119,35 @@ def addProd():
 
     def confirmProd():
         name = Name.get()
+
+        if not name:
+            tk.messagebox.showerror("Error","Name not entered")
+            return
+        
         suppliesNeeded = supply
 
         if not supply:
             tk.messagebox.showerror("Error","No Supplies Selected")
             return
         Desc = desc.get()
-        Price = float(price.get())
 
-        temp = Product(None, name, suppliesNeeded, Desc, Price)
+        if not Desc:
+            tk.messagebox.showerror("Error","No Description Entered")
+            return
+            
+        try:
+            Price = float(price.get())
+        except ValueError:
+            tk.messagebox.showerror("Error","Price must be number")
+            return
+
+        if not Price:
+            tk.messagebox.showerror("Error","Price must be entered")
+            return
+        
+            
+
+        temp = Product(None, name, suppliesNeeded, Desc, Price,None)
 
         try:
                   
@@ -161,6 +189,7 @@ def editProd():
 
     root.title("Edit Product")
     root.configure(bg = "black")
+    
 
     style = ttk.Style(root)
     style.theme_use("clam")
@@ -195,7 +224,7 @@ def editProd():
     opt.set(Products[0])
 
     ProductMenu = ttk.OptionMenu(root, opt,Products[0], *Products,style = "1Black.TMenubutton")
-    ProductMenu.grid(row = 0, column = 1)
+    ProductMenu.grid(row = 0, column = 1,padx = 20,pady = 20)
 
     def changeProd():
         ProductMenu.destroy()
@@ -256,9 +285,16 @@ def editProd():
         
 
         def addSupply():
+            try:
+                QuanSup = int(Quantity.get())
+
+                new_item = [opt.get(),QuanSup]
+                supply.append(new_item)
+
+            except ValueError:
+                tk.messagebox.showerror("Error","Quantity is not a number")
+                return
             
-                    new_item = [opt.get(), int(Quantity.get())]
-                    supply.append(new_item)
 
                           
 
@@ -266,6 +302,11 @@ def editProd():
 
         def confirmProd():
             name = Name.get()
+
+            if not name:
+                tk.messagebox.showerror("Error","Name not entered")
+                return
+            
             suppliesNeeded = supply
 
             if not supply:
@@ -308,9 +349,85 @@ def editProd():
 
             
 
-    ttk.Button(root,style = "1Conf.TButton", text = "Confirm", command = lambda: changeProd()).grid(row = 6, column = 1)
+    ttk.Button(root,style = "1Conf.TButton", text = "Confirm", command = lambda: changeProd()).grid(row = 6, column = 1,padx = 20,pady = 10)
 
-  
+
+def deleteProd():
+    root = tk.Toplevel()
+
+    Products = [] # for Dropdown
+
+    root.title("Delete Product")
+    root.configure(bg = "black")
+    root.rowconfigure(0,weight = 1)
+    root.geometry("150x200")
+
+    style = ttk.Style(root)
+    style.theme_use("clam")
+
+    style.configure("1Main.TLabel",background = "black", foreground = "white", font = ("Arial",30,"bold"))
+    style.configure("1Entry.TLabel",background = "black", foreground = "white", font = ("Arial",16,"bold"))
+
+    style.configure(
+    "1Black.TMenubutton",   
+    background="black",         
+    foreground="white",
+    bordercolor="#FFFFFF",
+    borderwidth=2,
+    padding=5)
+
+    style.configure("1Conf.TButton", background = "white",foreground = "black")
+
+    
+
+
+    with open("products.pkl","rb") as file:
+        my_products = list(pickle.load(file))
+
+
+    for item in my_products:
+        display = f"{item.name}"
+        Products.append(display)
+
+    opt = StringVar()
+    opt.set(Products[0])
+
+    ProductMenu = ttk.OptionMenu(root, opt,Products[0], *Products,style = "1Black.TMenubutton")
+    ProductMenu.grid(row = 0, column = 1,pady = 20,padx = 20)
+
+    def delProd():
+        nonlocal opt
+        Product = opt.get()
+
+        for obj in my_products:
+            if obj.name == Product:
+                opt2 = tk.messagebox.askyesno("Are you Sure?","Are you sure this is the product you want to delete?")
+
+                if opt2:
+                    my_products.remove(obj)
+                    tk.messagebox.showinfo("Success","Product Deleted")
+                    break
+                else:
+                    tk.messagebox.showinfo("Aborted","Product Not Deleted")
+                    
+
+        with open("products.pkl","wb+") as file:
+            pickle.dump(my_products,file)
+                
+                
+
+    ConfButton = ttk.Button(root, text = "Confirm Product", style= "1Conf.TButton", command = lambda: delProd())
+    ConfButton.grid(row = 1, column = 1,pady = 10)
+
+
+
+
+
+
+
+    
+
+
 
         
 

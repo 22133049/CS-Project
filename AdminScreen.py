@@ -1,10 +1,11 @@
 import tkinter as tk
 from tkinter import ttk
 from tkinter import messagebox
-from Account import regStaff
-from Product import addProd,editProd
+from Account import regStaff, LogOut
+from Product import addProd,editProd,deleteProd
 from Inventory import openInv
 from ViewAccounts import viewAccounts
+from ViewReviews import viewReviews
 from Order import viewOrders
 
 
@@ -25,7 +26,7 @@ def AdminScreen():
 
     style.configure("Button.TButton", background = "white",foreground = "black")
 
-    menu.geometry("500x500")
+    menu.geometry("500x600")
 
     welcome = ttk.Label(menu,style = "BWhite.TLabel", text = "Welcome!",anchor = "center")
     welcome.grid(row=0,column = 0)
@@ -56,23 +57,35 @@ def AdminScreen():
 
     ttk.Label(menu,style = "FWhite.TLabel",text="").grid(row=9,column=0)
 
-    ordButton = ttk.Button(menu,style = "Button.TButton",text = "View Orders", command = lambda: viewOrders() )
-    ordButton.grid(row = 10, column = 0)
+    deleteButton = ttk.Button(menu,style = "Button.TButton", text = "Delete a Product", command = lambda: deleteProd())
+    deleteButton.grid(row = 10, column = 0)
 
-    
     ttk.Label(menu,style = "FWhite.TLabel",text="").grid(row=11,column=0)
 
-    accButton = ttk.Button(menu,style = "Button.TButton",text = "View All Accounts",command = lambda: viewAccounts())
-    accButton.grid(row = 12,column = 0)
+    ordButton = ttk.Button(menu,style = "Button.TButton",text = "View Orders", command = lambda: viewOrders() )
+    ordButton.grid(row = 12, column = 0)
 
+    
     ttk.Label(menu,style = "FWhite.TLabel",text="").grid(row=13,column=0)
 
+    accButton = ttk.Button(menu,style = "Button.TButton",text = "View All Accounts",command = lambda: viewAccounts())
+    accButton.grid(row = 14,column = 0)
+
+    ttk.Label(menu,style = "FWhite.TLabel",text="").grid(row=15,column=0)
+
+    revButton = ttk.Button(menu,style = "Button.TButton",text = "View All Accounts",command = lambda: viewReviews())
+    revButton.grid(row = 16,column = 0)
 
 
-    ttk.Label(menu,style = "FWhite.TLabel", text="").grid(row = 14, column = 0)
+
+    ttk.Label(menu,style = "FWhite.TLabel", text="").grid(row = 17, column = 0)
 
     invButton = ttk.Button(menu,style = "Button.TButton",text = "Add to/View Inventory", command = lambda: openInv() )
-    invButton.grid(row = 15, column = 0)
+    invButton.grid(row = 18, column = 0)
+
+    ttk.Label(menu,style = "FWhite.TLabel", text="").grid(row = 19, column = 0)
+
+    ttk.Button(menu,style= "Button.TButton", text = "Log Out",command = lambda: LogOut(menu)).grid(row = 20, column = 0)
 
 
     

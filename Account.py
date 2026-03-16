@@ -9,6 +9,8 @@ from tkinter import messagebox, ttk
 
 
 
+
+
 class Account():
     def __init__(self,id,fName,sName,eMail,pWord,pNum,pCode,isAdmin):
         self.fName = fName
@@ -243,11 +245,43 @@ def EditAccount():
     def change():
 
         fName = fNameEntry.get()
+
+        if len(fName) > 10 or len(fName) <= 0:
+                tk.messagebox.showerror("Error","First Name too long or empty")
+                return
+            
         sName = sNameEntry.get()
+
+        if len(sName) > 20 or len(sName) <= 0:
+                tk.messagebox.showerror("Error","Surname too long or empty")
+                return
         eMail = eMailEntry.get()
+
+        if len(eMail) == 0 or len(eMail) > 30:
+                tk.messagebox.showerror("Error", "Nothing Entered or Too long")
+                return
+
+        if "@" not in eMail:
+                tk.messagebox.showerror("Error", "Invalid Format")
+                return
+            
         pWord = pWordEntry.get()
+
+        if len(pWord) < 8 or len(pWord) > 20:
+                tk.messagebox.showerror("Error","Password does not have at least 8 letters or is too long")
+                return
+
         pNum = str(pNumEntry.get())
+
+        
+        if len(pNum) != 11 or not pNum.isdigit():
+                tk.messagebox.showerror("Error","Invalid Phone Number")
+                return
         pCode = pCodeEntry.get()
+
+        if len(pCode) != 6 and len(pCode) != 7:
+                tk.messagebox.showerror("Error", "Invalid Postcode")
+                return
         id = user.id
         isAdmin = user.isAdmin
 
@@ -277,6 +311,7 @@ def EditAccount():
         else:
             with open("customers.pkl","wb") as file:
                 pickle.dump(my_objects,file)
+                tk.messagebox.showinfo("Success","Details Changed")
 
         
 
@@ -429,22 +464,33 @@ def regStaff():
 def LogInScreen():
 
     root = tk.Tk()
+    root.configure(bg = "pink")
+    root.title("Log In")
 
-    LogIn = tk.Label(root, text = "Log In", font =("Arial",20))
+    style = ttk.Style()
+    style.theme_use("clam")
+
+    style.configure("Pink.TLabel",background = "pink", foreground = "white", font=("Arial",20,"bold"))
+    style.configure("SPink.TLabel",background = "pink", foreground = "white", font=("Arial",14,"bold"))
+    style.configure("Button.TButton",background = "white",foreground = "black",bordercolor = "#C2185B",
+                    borderwidth = 2)
+                    
+
+    LogIn = ttk.Label(root, text = "Log In",style = "Pink.TLabel")
     LogIn.grid(row = 0, column = 0, columnspan = 2)
 
-    eMailLabel = tk.Label(root, text = "E-Mail:")
+    eMailLabel = ttk.Label(root,style = "SPink.TLabel", text = "E-Mail:")
     eMailLabel.grid(row = 1, column = 1)
     eMail = tk.Entry(root)
     eMail.grid(row = 1, column = 2)
 
-    pWordLabel = tk.Label(root, text = "Password:")
+    pWordLabel = ttk.Label(root,style = "SPink.TLabel", text = "Password:")
     pWordLabel.grid(row = 2, column = 1)
     pWord = tk.Entry(root, show = "*")
     pWord.grid(row = 2, column = 2)
 
 
-    Filler = tk.Label(root)
+    Filler = ttk.Label(root,style = "Pink.TLabel")
     Filler.grid(row = 7, column = 1, columnspan = 2)
 
 
@@ -452,23 +498,37 @@ def LogInScreen():
         eMailentry = eMail.get()
         pWordentry = pWord.get()
 
-        with open ("customers.pkl","rb") as file:
-            my_objects = list(pickle.load(file))
+        try:
 
-        with open("staff.pkl","rb") as staff:
-            my_staff = list(pickle.load(staff))
+            with open ("customers.pkl","rb") as file:
+                my_objects = list(pickle.load(file))
+
+        except EOFError:
+            tk.messagebox.showerror("Error","File is empty, cannot read")
+            return
+
+        try:
+
+
+            with open("staff.pkl","rb") as staff:
+                my_staff = list(pickle.load(staff))
+
+        except EOFError:
+            tk.messagebox.showerror("Error","Staff file is empty, cannot read")
+            return
 
 
 
         found = False
 
-        for customer in my_objects: #checks through customer file first
+        for customer in my_objects:
             if customer.eMail == eMailentry and customer.pWord == pWordentry and found == False:
                 found = True
                 tk.messagebox.showinfo("Success","Logged In")
                 with open("current_user.pkl","wb") as file:
                     pickle.dump(customer,file)
                 root.destroy()
+                from MainMenu import MenuScreen
 
 
                 MenuScreen()
@@ -476,13 +536,14 @@ def LogInScreen():
                 return
 
                 
-        for staff in my_staff:#then checks through staff file
+        for staff in my_staff:
             if staff.eMail == eMailentry and staff.pWord == pWordentry and found == False:
                 found = True
                 tk.messagebox.showinfo("success","Logged in")
                 with open("current_user.pkl","wb") as file:
                     pickle.dump(staff,file)
                 root.destroy()
+                from AdminScreen import AdminScreen
                 AdminScreen()
                 return
                 
@@ -490,6 +551,14 @@ def LogInScreen():
 
         if found == False:
             tk.messagebox.showerror("Incoorect,""Username or Password incorrect")
+                
+            
+        
+            
+            
+            
+
+    ttk.Button(root, text = "Log In", style = "Button.TButton",command = lambda: LogIn()).grid(row = 8, column = 1, columnspan = 2)
 
 
 def deleteAccount(menu):
@@ -507,6 +576,7 @@ def deleteAccount(menu):
 
             if opt == "yes":
                 my_objects.remove(obj)
+            
                 
 
                 with open("customers.pkl","wb+") as file:
@@ -514,9 +584,31 @@ def deleteAccount(menu):
 
                     menu.destroy()
                     LogInScreen()
+                    
                 break
             
             else:
+                tk.messagebox.showinfo("Aborted","Account not Deleted")
                 return
+
+
+def LogOut(menu):
+
+    with open("current_user.pkl","rb") as file:
+        my_objects = pickle.load(file)
+
+    my_objects = None
+
+    with open("current_user.pkl","wb+") as file:
+        pickle.dump(my_objects,file)
+
+    from Project import MainScreen
+
+    menu.destroy()
+              
+
+    MainScreen()
+
+    
 
 
