@@ -11,6 +11,9 @@ class Product:
         self.Desc = Desc
         self.Price = Price
         self.suppliesNeeded = suppliesNeeded
+
+        if not Reviews:
+            Reviews = []
         self.Reviews = Reviews
 
         if not id:
