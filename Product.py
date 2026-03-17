@@ -27,7 +27,7 @@ class Product:
         self.id = id
             
 
-        def get_attributes(self):
+    def get_attributes(self):
             ob_att = [self.id, self.name, self.suppliesNeeded, self.Desc, self.Price, self.Reviews]
             return ob_att
 
