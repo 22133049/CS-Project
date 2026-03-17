@@ -10,7 +10,7 @@ def leaveReview():
 
     root = tk.Toplevel()
 
-    root.title("Place Order")
+    root.title("Leave Review")
     root.configure(bg = "pink")
 
     #STYLING
@@ -32,9 +32,7 @@ def leaveReview():
                 
 
     Products = [] # for Dropdown
-    ProductPrices = {}
     ProdSelect = []
-    Supplies = []
     
     #GRAB PRODUCTS FROM FILE
 
@@ -43,10 +41,8 @@ def leaveReview():
 
     for item in my_products:#takes product and display the name and price into dropdown menu
         safename = item.name.strip("{}")
-        display = f"{item.name} (£{item.Price})"
+        display = f"{item.name}"
         Products.append(display)
-        ProductPrices[item.name] = item.Price
-        Supplies.append(item.suppliesNeeded)
 
     ttk.Label(root,text = "Select Product",style = "Label.TLabel",font = ("Arial",20,'bold')).grid(row = 0, column = 0)
 
@@ -71,16 +67,18 @@ def leaveReview():
         Review = ttk.Entry(revMenu)
         Review.grid(row = 1, column = 2,padx = 20,pady = 20)
         
-        nonlocal opt
-        for obj in my_products:
-            if obj.name == opt.get():
-                selected_product = obj
-                break
+
 
         with open("current_user.pkl","rb") as file:
             my_user = pickle.load(file)
 
         def confirm():
+
+            nonlocal opt
+            for obj in my_products:
+                if obj.name == opt.get():
+                    selected_product = obj
+                    break
             review = Review.get()
             if not review:
                 tk.messagebox.showerror("Error","No Review Entered")
@@ -132,9 +130,7 @@ def viewReviews():
                 
 
     Products = [] # for Dropdown
-    ProductPrices = {}
     ProdSelect = []
-    Supplies = []
     
     #GRAB PRODUCTS FROM FILE
 
@@ -143,10 +139,8 @@ def viewReviews():
 
     for item in my_products:#takes product and display the name and price into dropdown menu
         safename = item.name.strip("{}")
-        display = f"{item.name} (£{item.Price})"
+        display = f"{item.name}"
         Products.append(display)
-        ProductPrices[item.name] = item.Price
-        Supplies.append(item.suppliesNeeded)
 
     ttk.Label(root,text = "Select Product",style = "Label.TLabel",font = ("Arial",20,'bold')).grid(row = 0, column = 0)
 
@@ -172,6 +166,8 @@ def viewReviews():
             if obj.name == opt.get():
                 selected_product = obj
                 break
+
+        frames =[]
 
 
         for review in selected_product.Reviews:
