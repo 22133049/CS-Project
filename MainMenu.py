@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import ttk
 from tkinter import messagebox
 from Order import placeOrder, cancelOrder
+from ViewReviews import leaveReview
 from Account import EditAccount, deleteAccount, LogOut
 
 
@@ -54,7 +55,7 @@ def MenuScreen():
 
     ttk.Label(menu,text="",style = "Label.TLabel").grid(row=9,column=0)
 
-    ttk.Button(menu,text = "Leave Review",style = "Button.TButton", command = lambda:leaveReview).grid(row = 10, column = 0)
+    ttk.Button(menu,text = "Leave Review",style = "Button.TButton", command = lambda:leaveReview()).grid(row = 10, column = 0)
 
     ttk.Label(menu,text="",style = "Label.TLabel").grid(row=11,column=0)
     

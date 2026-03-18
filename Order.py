@@ -294,18 +294,21 @@ def viewOrders():
     def saveOrdersToFile():
         new_orders = []
         for o in readord:
-            new_order = Order(
-                o.get('id'),
-                o.get('cusID'),
-                o.get('contents'),
-                o.get('date'),
-                o.get('delivDate'),
-                o.get('ordStat'),
-                o.get('cost'),
-                o.get('supply'),
-                o.get('canCreate'),
-            )
-            new_orders.append(new_order)#reappends the order to file if status is changed
+
+            if o['ordStat'] == "Making" or o['ordStat'] != "Delivered":
+
+                new_order = Order(
+                    o.get('id'),
+                    o.get('cusID'),
+                    o.get('contents'),
+                    o.get('date'),
+                    o.get('delivDate'),
+                    o.get('ordStat'),
+                    o.get('cost'),
+                    o.get('supply'),
+                    o.get('canCreate'),
+                )
+                new_orders.append(new_order)#reappends the order to file if status is changed
 
         with open("orders.pkl", "wb") as file:
             pickle.dump(new_orders, file)
@@ -343,7 +346,7 @@ def viewOrders():
         frames.clear()
 
         for order in readord:
-            if order['ordStat'] == "Making":#for each order make a new frame and pack it
+            if order['ordStat'] == "Making" or order['ordStat'] != "Delivered":#for each order make a new frame and pack it
                 frame = tk.Frame(root,bg = "white",highlightbackground="#FFFFFF",highlightthickness=2,bd=0 , relief="solid", padx=5, pady=5)
                 frame.pack(fill="x", pady=2)
                 frames.append(frame)
@@ -358,6 +361,8 @@ def viewOrders():
                     f"Can Create: {order['canCreate']}"
                 )
                 tk.Label(frame, text=text, anchor="w",bg = "white", fg = "black").pack(side="left", fill="x", expand=True)
+
+                ttk.Button(frame,text ="Update Status", command = lambda o = order: updateOrd(o, frames)).pack(side = "right")
 
                 
 

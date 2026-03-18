@@ -73,7 +73,7 @@ def AdminScreen():
 
     ttk.Label(menu,style = "FWhite.TLabel",text="").grid(row=15,column=0)
 
-    revButton = ttk.Button(menu,style = "Button.TButton",text = "View All Accounts",command = lambda: viewReviews())
+    revButton = ttk.Button(menu,style = "Button.TButton",text = "View Reviews",command = lambda: viewReviews())
     revButton.grid(row = 16,column = 0)
 
 

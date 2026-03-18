@@ -61,6 +61,8 @@ def leaveReview():
     def writeReview():
 
         revMenu = tk.Toplevel(root)
+        revMenu.title("Leave Review")
+        revMenu.configure(bg = "pink")
 
 
         ttk.Label(revMenu,text = "Write here: ",style = "Label.TLabel").grid(row = 1, column = 1)
@@ -84,8 +86,9 @@ def leaveReview():
                 tk.messagebox.showerror("Error","No Review Entered")
 
             cusID = my_user.id
+            cusName = my_user.fName + " " + my_user.sName
 
-            finalReview = [cusID,review]
+            finalReview = [cusID,cusName,review]
 
             selected_product.Reviews.append(finalReview)
 
@@ -118,7 +121,7 @@ def viewReviews():
     style.configure("Button.TButton",background = "white",foreground = "black",bordercolor = "#FFFFFF",
                     borderwidth = 2)
 
-    style.configure("Label.TLabel",background = "black", foreground = "White")
+    style.configure("Label.TLabel",background = "black", foreground = "White", font = ("Arial",16,"bold"))
 
     style.configure(
     "Custom.TMenubutton",   
@@ -169,16 +172,22 @@ def viewReviews():
 
         frames =[]
 
+        text = "Reviews for" +" " + selected_product.name
+
+
+        ttk.Label(menu,style = "Label.TLabel",text = text).pack()
+
 
         for review in selected_product.Reviews:
 
                 cust_id = review[0]
-                review_text = review[1]
+                cust_name = review[1]
+                review_text = review[2]
                 frame = tk.Frame(menu,bg = "white",highlightbackground="#FFFFFF",highlightthickness=2,bd=0 , relief="solid", padx=5, pady=5)
                 frame.pack(fill="x", pady=2)
                 frames.append(frame)
 
-                text = f"Customer {cust_id}: {review_text}"
+                text = f"Customer {cust_id} - {cust_name}: {review_text}"
                     
                 tk.Label(frame, text=text, anchor="w",bg = "white", fg = "black").pack(side="left", fill="x", expand=True)
 
